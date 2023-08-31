@@ -31,8 +31,24 @@ fn main() {
         tree.push_leaf(&random_leaf()[..], ns2)
             .expect("Failed to push leaf");
     }
-    for _ in 20..32 {
+    for _ in 20..31 {
         tree.push_leaf(&random_leaf()[..], ns3)
             .expect("Failed to push leaf");
     }
+    let leaves = tree.leaves();
+    println!("num leaves: {}", leaves.len());
+
+    let mut count = 0;
+    for chunk in leaves.chunks(2) {
+        let min = chunk[0].hash.min_namespace().0[0];
+        if chunk.len() > 1 {
+            let max = chunk[1].hash.max_namespace().0[0];
+            println!("min: {:?}, max: {:?}", min, max);
+        }
+        else {
+           println!("not full"); 
+        }
+        count += 1;
+    }
+    println!("number of layer 2 leaves: {}", count);
 }
